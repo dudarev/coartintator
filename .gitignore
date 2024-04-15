@@ -1,0 +1,5 @@
+.coverage
+.env
+.python-version
+.vscode
+out.txt
