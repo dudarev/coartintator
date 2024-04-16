@@ -6,6 +6,7 @@ import pytest
 from coartintator.entities import Post, PostsSet
 from coartintator.repo import FileBasedRepository
 from coartintator.services.feed_updater import FeedUpdater
+from coartintator.entities import PostSummary
 
 REPO_PATH = Path(__file__).parent / "assets" / "test_file_based_repo"
 REPO_FILE = "feed_1.md"
@@ -55,3 +56,26 @@ def test_file_based_repository_save(random_vault):
     assert len(feeds) == 1
     feed = feeds[0]
     assert len(PostsSet.from_markdown(feed.content).posts) == 7
+
+
+def test_get_posts_to_summarize(random_vault):
+    repo = FileBasedRepository(random_vault)
+    posts = repo.get_posts_to_summarize()
+
+    assert len(posts) == 1
+    assert posts[0].name == "post_1"
+
+
+def test_file_based_repository_save_post_summary(random_vault):
+    repo = FileBasedRepository(random_vault)
+    posts = repo.get_posts_to_summarize()
+    summary = PostSummary(post=posts[0], summary="This is a summary.")
+    repo.save_post_summary(summary)
+
+    # Verify that the summary file is created
+    file_path = repo.summaries_path / "Summary - post_1.md"
+    assert file_path.exists()
+
+    # Verify the content of the summary file
+    with open(file_path, "r") as f:
+        assert "This is a summary." in f.read()

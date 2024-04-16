@@ -34,6 +34,17 @@ class Post:
         self.name = pathvalidate.sanitize_filename(self.name)
         self.updated_at = self.updated_at or datetime.now(tz=timezone.utc).isoformat()
 
+    @staticmethod
+    def from_dict(data: dict):
+        return Post(
+            name=data["name"],
+            title=data.get("title"),
+            url=data.get("post_url"),
+            content=data.get("content"),
+            status=data.get("status", "read"),
+            updated_at=data.get("updated_at"),
+        )
+
     def to_dict_without_content(self):
         return {
             "type": "post",
@@ -53,6 +64,34 @@ class Post:
     def to_markdown(self) -> str:
         frontmatter_post = frontmatter.Post(
             content=self.content or "", **self.to_dict_without_content()
+        )
+        return frontmatter.dumps(frontmatter_post)
+
+
+@dataclass(kw_only=True)
+class PostSummary:
+    post: Post
+    summary: str
+
+    @property
+    def name(self):
+        return f"Summary - {self.post.name}"
+
+    def to_dict_without_content(self):
+        return {
+            "type": "summary",
+            "post_url": self.post.url,
+        }
+
+    def to_link(self):
+        """
+        Return a link to the post summary.
+        """
+        return f"[[{self.name}]]"
+
+    def to_markdown(self) -> str:
+        frontmatter_post = frontmatter.Post(
+            content=self.summary or "", **self.to_dict_without_content()
         )
         return frontmatter.dumps(frontmatter_post)
 

@@ -9,6 +9,21 @@ author-email = "contact@coartintate.com"
 home-page = "https://coartintate.com/Coartintator"
 classifiers = ["License :: OSI Approved :: MIT License"]
 
+requires = [
+    "anthropic ~=0.25.1",
+    "orjson ~=3.9.15",
+    "pathvalidate ~=3.2.0",
+    "python-dotenv ~=1.0.1",
+    "python-frontmatter ~=1.1.0",
+    "pytube ~=15.0.0",
+    "scrapetube ~=2.5.1",
+    "youtube-transcript-api ~=0.6.2",
+]
+
+# pip install .[test]
+[tool.flit.metadata.requires-extra]
+test = ["pytest >=8.1.1", "pytest-cov >=3.0.0", "ruff >=0.3.7"]
+
 [tool.flit.scripts]
 c = "coartintator:main.main"
 
@@ -48,7 +63,7 @@ line-length = 88
 indent-width = 4
 
 # Assume Python 3.8
-target-version = "py38"
+target-version = "py312"
 
 [tool.ruff.lint]
 # Enable Pyflakes (`F`) and a subset of the pycodestyle (`E`)  codes by default.

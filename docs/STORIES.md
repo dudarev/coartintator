@@ -1,4 +1,4 @@
-# Stories
+# User Stories
 
 - Feeds are located in the vault in `feeds/` directory
 - Posts are located in the vault in `posts/` directory
@@ -16,8 +16,8 @@
   - Gets all posts from the feed
   - Updates those that are not present in the file
   - Then downloads all the posts from 'Download' section
-
-## Later
-
-- Implement `last_crawled_at` property for feeds
-- Implement filter logic when determining which feeds to update
+- When a user adds `SUM` command to a post
+  - New file is created at `summaries/` directory
+  - The file with name `Summary - {post_name}` is created there
+  - The file contains the summary of the post
+  - SUM in the original post is replaced with wiki link to the summary file

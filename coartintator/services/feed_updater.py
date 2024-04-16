@@ -7,7 +7,6 @@ class FeedUpdater:
         self.repository = repository
 
     def update_feed(self, feed: Feed, posts: PostsSet, dry_run: bool = False) -> Feed:
-        print(f"Updating feed {feed.name}")
         feed.update_content(posts)
         if not dry_run:
             self.repository.update_feed(feed)
